@@ -1,0 +1,3638 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" simulationEngine="OPENSTACK" schemaVersion="0.7" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.7/virl.xsd">
+    <extensions>
+        <entry type="Boolean" key="AutoNetkit.enable_cdp">true</entry>
+        <entry type="Boolean" key="AutoNetkit.enable_OnePK">false</entry>
+        <entry type="String" key="AutoNetkit.IGP">isis</entry>
+        <entry type="Boolean" key="AutoNetkit.enable_mpls_oam">true</entry>
+        <entry type="String" key="AutoNetkit.address_family">dual_stack</entry>
+        <entry type="String" key="AutoNetkit.ipv4_vrf_loopback_subnet">172.16.0.0</entry>
+        <entry type="String" key="AutoNetkit.ipv4_vrf_loopback_prefix">24</entry>
+        <entry type="String" key="AutoNetkit.ipv4_loopback_prefix">22</entry>
+        <entry type="String" key="AutoNetkit.ipv4_loopback_subnet">192.168.0.0</entry>
+        <entry type="String" key="AutoNetkit.ipv4_infra_prefix">8</entry>
+        <entry type="String" key="AutoNetkit.ipv4_infra_subnet">10.0.0.0</entry>
+    </extensions>
+    <node ipv6="::b:1:0:0:3" ipv4="192.168.0.3" vmFlavor="IOS XRv" vmImage="IOS XRv-k9-demo-5.2.2" location="394,144" subtype="IOS XRv" type="SIMPLE" name="Px13">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!! IOS XR Configuration 5.2.2
+!! Last configuration change at Thu Apr  6 18:00:40 2017 by cisco
+!
+! IOS-XR Config generated on 2015-04-22 19:09
+! by CML Configuration Engine 1.0
+hostname Px13
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+cdp
+line template vty
+ timestamp
+ exec-timeout 720 0
+!
+line console
+ exec-timeout 0 0
+!
+line default
+ exec-timeout 720 0
+!
+vty-pool default 0 50
+interface Loopback0
+ description Loopback
+ ipv4 address 192.168.0.13 255.255.255.255
+ ipv6 address ::b:1:0:0:13/128
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ cdp
+ ! Configured on launch
+ ipv4 address 10.18.0.3 255.255.0.0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+ description to Px14
+ cdp
+ ipv4 address 10.1.0.1 255.255.255.252
+ ipv6 address ::a:1:1:0:1/126
+!
+interface GigabitEthernet0/0/0/1
+ description to RR11
+ cdp
+ ipv4 address 10.1.0.5 255.255.255.252
+ ipv6 address ::a:1:1:0:5/126
+!
+interface GigabitEthernet0/0/0/2
+ description to PEx17
+ cdp
+ ipv4 address 10.1.0.9 255.255.255.252
+ ipv6 address ::a:1:1:0:9/126
+!
+interface GigabitEthernet0/0/0/3
+ description to PEx18
+ cdp
+ ipv4 address 10.1.0.13 255.255.255.252
+ ipv6 address ::a:1:1:0:d/126
+!
+interface GigabitEthernet0/0/0/4
+ description to ASBR15
+ cdp
+ ipv4 address 10.1.0.17 255.255.255.252
+ ipv6 address ::a:1:1:0:11/126
+!
+interface GigabitEthernet0/0/0/5
+ description to ASBR16
+ cdp
+ ipv4 address 10.1.0.21 255.255.255.252
+ ipv6 address ::a:1:1:0:15/126
+!
+!
+router isis 1
+ net 56.0000.0000.0013.00
+ net 78.0000.0000.0013.00
+ lsp-refresh-interval 65535
+ max-lsp-lifetime 65535
+ address-family ipv4 unicast
+  metric-style wide
+ !
+ address-family ipv6 unicast
+  metric-style wide
+ !
+ interface Loopback0
+  passive
+  circuit-type level-2-only
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/1
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/2
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/3
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/4
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/5
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+!
+router bgp 1
+ bgp router-id 192.168.0.13
+ address-family ipv4 unicast
+  network 192.168.0.13/32
+ !
+ address-family ipv6 unicast
+  network ::b:1:0:0:13/128
+ !
+ neighbor 192.168.0.11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor 192.168.0.12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor ::b:1:0:0:11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+!
+mpls oam
+!
+mpls ldp
+ interface GigabitEthernet0/0/0/0
+ !
+ interface GigabitEthernet0/0/0/1
+ !
+ interface GigabitEthernet0/0/0/2
+ !
+ interface GigabitEthernet0/0/0/3
+ !
+ interface GigabitEthernet0/0/0/4
+ !
+ interface GigabitEthernet0/0/0/5
+ !
+!
+multicast-routing
+ address-family ipv4
+  interface all enable
+ !
+ address-family ipv6
+  interface all enable
+ !
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:25" ipv4="10.2.128.9" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:31" ipv4="10.2.128.21" name="GigabitEthernet0/0/0/1" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:2a" ipv4="10.2.128.13" name="GigabitEthernet0/0/0/2" id="2"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:2e" ipv4="10.2.128.17" name="GigabitEthernet0/0/0/3" id="3"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:12" ipv4="10.2.0.10" name="GigabitEthernet0/0/0/4" id="4"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:1e" ipv4="10.2.128.2" name="GigabitEthernet0/0/0/5" id="5"/>
+    </node>
+    <node ipv6="::b:1:0:0:4" ipv4="192.168.0.4" vmFlavor="IOS XRv" vmImage="IOS XRv-k9-demo-5.2.2" location="394,307" subtype="IOS XRv" type="SIMPLE" name="Px14">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!! IOS XR Configuration 5.2.2
+!! Last configuration change at Thu Apr  6 18:00:58 2017 by cisco
+!
+! IOS-XR Config generated on 2015-04-22 19:09
+! by CML Configuration Engine 1.0
+hostname Px14
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+cdp
+line template vty
+ timestamp
+ exec-timeout 720 0
+!
+line console
+ exec-timeout 0 0
+!
+line default
+ exec-timeout 720 0
+!
+vty-pool default 0 50
+interface Loopback0
+ description Loopback
+ ipv4 address 192.168.0.14 255.255.255.255
+ ipv6 address ::b:1:0:0:14/128
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ cdp
+ ! Configured on launch
+ ipv4 address 10.18.0.4 255.255.0.0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+ description to Px13
+ cdp
+ ipv4 address 10.1.0.2 255.255.255.252
+ ipv6 address ::a:1:1:0:2/126
+!
+interface GigabitEthernet0/0/0/1
+ description to RR12
+ cdp
+ ipv4 address 10.1.0.25 255.255.255.252
+ ipv6 address ::a:1:1:0:19/126
+!
+interface GigabitEthernet0/0/0/2
+ description to PEx17
+ cdp
+ ipv4 address 10.1.0.29 255.255.255.252
+ ipv6 address ::a:1:1:0:1d/126
+!
+interface GigabitEthernet0/0/0/3
+ description to PEx18
+ cdp
+ ipv4 address 10.1.0.33 255.255.255.252
+ ipv6 address ::a:1:1:0:21/126
+!
+interface GigabitEthernet0/0/0/4
+ description to ASBR15
+ cdp
+ ipv4 address 10.1.0.37 255.255.255.252
+ ipv6 address ::a:1:1:0:25/126
+!
+interface GigabitEthernet0/0/0/5
+ description to ASBR16
+ cdp
+ ipv4 address 10.1.0.41 255.255.255.252
+ ipv6 address ::a:1:1:0:29/126
+!
+!
+router isis 1
+ net 56.0000.0000.0014.00
+ net 78.0000.0000.0014.00
+ lsp-refresh-interval 65535
+ max-lsp-lifetime 65535
+ address-family ipv4 unicast
+  metric-style wide
+ !
+ address-family ipv6 unicast
+  metric-style wide
+ !
+ interface Loopback0
+  passive
+  circuit-type level-2-only
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/1
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/2
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/3
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/4
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/5
+  point-to-point
+  hello-padding disable
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+!
+router bgp 1
+ bgp router-id 192.168.0.14
+ address-family ipv4 unicast
+  network 192.168.0.14/32
+ !
+ address-family ipv6 unicast
+  network ::b:1:0:0:14/128
+ !
+ neighbor 192.168.0.11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor 192.168.0.12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor ::b:1:0:0:11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+!
+mpls oam
+!
+mpls ldp
+ interface GigabitEthernet0/0/0/0
+ !
+ interface GigabitEthernet0/0/0/1
+ !
+ interface GigabitEthernet0/0/0/2
+ !
+ interface GigabitEthernet0/0/0/3
+ !
+ interface GigabitEthernet0/0/0/4
+ !
+ interface GigabitEthernet0/0/0/5
+ !
+!
+multicast-routing
+ address-family ipv4
+  interface all enable
+ !
+ address-family ipv6
+  interface all enable
+ !
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:26" ipv4="10.2.128.10" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:3d" ipv4="10.2.0.17" name="GigabitEthernet0/0/0/1" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:36" ipv4="10.2.128.25" name="GigabitEthernet0/0/0/2" id="2"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:3a" ipv4="10.2.128.29" name="GigabitEthernet0/0/0/3" id="3"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:16" ipv4="10.2.0.14" name="GigabitEthernet0/0/0/4" id="4"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:22" ipv4="10.2.128.6" name="GigabitEthernet0/0/0/5" id="5"/>
+    </node>
+    <node ipv6="::b:1:0:0:7" ipv4="192.168.0.7" vmFlavor="IOS XRv" vmImage="IOS XRv-k9-demo-5.2.2" location="207,144" subtype="IOS XRv" type="SIMPLE" name="PEx17">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!! IOS XR Configuration 5.2.2
+!! Last configuration change at Thu Apr  6 17:40:46 2017 by CVAC
+!
+! IOS-XR Config generated on 2015-04-22 19:09
+! by CML Configuration Engine 1.0
+hostname PEx17
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+cdp
+vrf Cust1S1
+ address-family ipv4 unicast
+  import route-target
+   100:1
+  !
+  export route-target
+   100:1
+  !
+ !
+ address-family ipv6 unicast
+  import route-target
+   100:1
+  !
+  export route-target
+   100:1
+  !
+ !
+!
+line template vty
+ timestamp
+ exec-timeout 720 0
+!
+line console
+ exec-timeout 0 0
+!
+line default
+ exec-timeout 720 0
+!
+vty-pool default 0 50
+interface Loopback0
+ description Loopback
+ ipv4 address 192.168.0.17 255.255.255.255
+ ipv6 address ::b:1:0:0:17/128
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ cdp
+ ! Configured on launch
+ ipv4 address 10.18.0.5 255.255.0.0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+ description to Px13
+ cdp
+ ipv4 address 10.1.0.10 255.255.255.252
+ ipv6 address ::a:1:1:0:a/126
+!
+interface GigabitEthernet0/0/0/1
+ description to Px14
+ cdp
+ ipv4 address 10.1.0.30 255.255.255.252
+ ipv6 address ::a:1:1:0:1e/126
+!
+interface GigabitEthernet0/0/0/2
+ description to Cust1S1
+ cdp
+ vrf Cust1S1
+ ipv4 address 10.2.0.21 255.255.255.252
+ ipv6 address ::a:1:1:0:42/126
+!
+interface GigabitEthernet0/0/0/3
+ shutdown
+!
+route-policy ALL
+  pass
+end-policy
+!
+route-policy NEXT_HOP
+  set next-hop ::a:1:1:0:42
+  pass
+end-policy
+!
+router isis 1
+ is-type level-1
+ net 78.0000.0000.0017.00
+ lsp-refresh-interval 65535
+ max-lsp-lifetime 65535
+ address-family ipv4 unicast
+  metric-style wide
+ !
+ address-family ipv6 unicast
+  metric-style wide
+ !
+ interface Loopback0
+  passive
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/1
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+!
+router bgp 1
+ bgp router-id 192.168.0.17
+ address-family ipv4 unicast
+  network 192.168.0.17/32
+ !
+ address-family vpnv4 unicast
+ !
+ address-family ipv6 unicast
+  network ::b:1:0:0:17/128
+ !
+ address-family vpnv6 unicast
+ !
+ neighbor 192.168.0.11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+  address-family vpnv4 unicast
+  !
+  address-family vpnv6 unicast
+  !
+ !
+ neighbor 192.168.0.12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+  address-family vpnv4 unicast
+  !
+  address-family vpnv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ ! vrfs
+ vrf Cust1S1
+  rd 100:17
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+  neighbor 10.2.0.22
+   remote-as 65000
+   description Cust1S1
+   address-family ipv4 unicast
+    route-policy ALL in
+    route-policy ALL out
+    as-override
+   !
+   address-family ipv6 unicast
+    route-policy ALL in
+    route-policy ALL out
+    as-override
+   !
+  !
+ !
+!
+mpls oam
+!
+mpls ldp
+ interface GigabitEthernet0/0/0/0
+ !
+ interface GigabitEthernet0/0/0/1
+ !
+!
+multicast-routing
+ address-family ipv4
+  interface all enable
+ !
+ address-family ipv6
+  interface all enable
+ !
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:29" ipv4="10.2.128.14" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:35" ipv4="10.2.128.26" name="GigabitEthernet0/0/0/1" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:42" ipv4="10.2.0.21" name="GigabitEthernet0/0/0/2" id="2"/>
+        <interface name="GigabitEthernet0/0/0/3" id="3"/>
+    </node>
+    <node ipv6="::b:1:0:0:8" ipv4="192.168.0.8" vmFlavor="IOS XRv" vmImage="IOS XRv-k9-demo-5.2.2" location="207,307" subtype="IOS XRv" type="SIMPLE" name="PEx18">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!! IOS XR Configuration 5.2.2
+!! Last configuration change at Thu Apr  6 17:40:56 2017 by CVAC
+!
+! IOS-XR Config generated on 2015-04-22 19:09
+! by CML Configuration Engine 1.0
+hostname PEx18
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+cdp
+vrf Cust1S1
+ address-family ipv4 unicast
+  import route-target
+   100:1
+  !
+  export route-target
+   100:1
+  !
+ !
+ address-family ipv6 unicast
+  import route-target
+   100:1
+  !
+  export route-target
+   100:1
+  !
+ !
+!
+vrf Cust2S1
+ vpn id 200:1
+ address-family ipv4 unicast
+  import route-target
+   100:1
+   200:1
+  !
+  export route-target
+   100:1
+   200:1
+  !
+ !
+ address-family ipv6 unicast
+  import route-target
+   100:1
+   200:1
+  !
+  export route-target
+   100:1
+   200:1
+  !
+ !
+!
+line template vty
+ timestamp
+ exec-timeout 720 0
+!
+line console
+ exec-timeout 0 0
+!
+line default
+ exec-timeout 720 0
+!
+vty-pool default 0 50
+interface Loopback0
+ description Loopback
+ ipv4 address 192.168.0.18 255.255.255.255
+ ipv6 address ::b:1:0:0:18/128
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ cdp
+ ! Configured on launch
+ ipv4 address 10.18.0.6 255.255.0.0
+ shutdown
+!
+interface GigabitEthernet0/0/0/0
+ description to Px13
+ cdp
+ ipv4 address 10.1.0.14 255.255.255.252
+ ipv6 address ::a:11:0:e/126
+!
+interface GigabitEthernet0/0/0/1
+ description to Px14
+ cdp
+ ipv4 address 10.1.0.34 255.255.255.252
+ ipv6 address ::a:1:1:0:22/126
+!
+interface GigabitEthernet0/0/0/2
+ description to Cust2S1
+ cdp
+ vrf Cust2S1
+ ipv4 address 10.2.0.2 255.255.255.252
+ ipv6 address ::a:1:1:0:6/126
+!
+interface GigabitEthernet0/0/0/3
+ description to Cust1S1
+ cdp
+ vrf Cust1S1
+ ipv4 address 10.22.0.21 255.255.255.252
+ ipv6 address ::a:11:1:0:42/126
+!
+route-policy ALL
+  pass
+end-policy
+!
+route-policy NEXT_HOP
+  set next-hop ::a:1:1:0:6
+  pass
+end-policy
+!
+router isis 1
+ is-type level-1
+ net 78.0000.0000.0018.00
+ lsp-refresh-interval 65535
+ max-lsp-lifetime 65535
+ address-family ipv4 unicast
+  metric-style wide
+ !
+ address-family ipv6 unicast
+  metric-style wide
+ !
+ interface Loopback0
+  passive
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+ !
+ interface GigabitEthernet0/0/0/0
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+ interface GigabitEthernet0/0/0/1
+  point-to-point
+  address-family ipv4 unicast
+   metric 1
+  !
+  address-family ipv6 unicast
+   metric 1
+  !
+ !
+!
+router bgp 1
+ bgp router-id 192.168.0.18
+ address-family ipv4 unicast
+  network 192.168.0.18/32
+ !
+ address-family vpnv4 unicast
+ !
+ address-family ipv6 unicast
+  network ::b:1:0:0:18/128
+ !
+ address-family vpnv6 unicast
+ !
+ session-group IBGP
+  remote-as 1
+  update-source Loopback0
+ !
+ neighbor-group IBGPv4
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+  address-family vpnv4 unicast
+  !
+  address-family vpnv6 unicast
+  !
+ !
+ neighbor-group IBGPv6
+  address-family ipv6 unicast
+  !
+ !
+ neighbor 192.168.0.11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+  address-family vpnv4 unicast
+  !
+  address-family vpnv6 unicast
+  !
+ !
+ neighbor 192.168.0.12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv4 unicast
+   soft-reconfiguration inbound
+  !
+  address-family vpnv4 unicast
+  !
+  address-family vpnv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:11
+  remote-as 1
+  description iBGP peer RR11
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ neighbor ::b:1:0:0:12
+  remote-as 1
+  description iBGP peer RR12
+  update-source Loopback0
+  address-family ipv6 unicast
+  !
+ !
+ ! vrfs
+ vrf Cust1S1
+  rd 100:18
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+ !
+ vrf Cust2S1
+  rd 200:18
+  address-family ipv4 unicast
+  !
+  address-family ipv6 unicast
+  !
+  neighbor 10.2.0.1
+   remote-as 65000
+   description Cust1S2
+   address-family ipv4 unicast
+    route-policy ALL in
+    route-policy ALL out
+    as-override
+   !
+   address-family ipv6 unicast
+    route-policy ALL in
+    route-policy ALL out
+    as-override
+   !
+  !
+ !
+!
+mpls oam
+!
+mpls ldp
+ interface GigabitEthernet0/0/0/0
+ !
+ interface GigabitEthernet0/0/0/1
+ !
+!
+multicast-routing
+ address-family ipv4
+  interface all enable
+ !
+ address-family ipv6
+  interface all enable
+ !
+!
+router pim
+ address-family ipv4
+  interface Loopback0
+   enable
+  !
+ !
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:2d" ipv4="10.2.128.18" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:39" ipv4="10.2.128.30" name="GigabitEthernet0/0/0/1" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:6" ipv4="10.2.0.2" name="GigabitEthernet0/0/0/2" id="2"/>
+        <interface name="GigabitEthernet0/0/0/3" id="3"/>
+    </node>
+    <node ipv6="::b:3:0:0:1" ipv4="10.168.0.109" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="48,141" subtype="IOSv" type="SIMPLE" name="Cust1S1-109">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:54:20 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cust1S1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 10.168.0.109 255.255.255.255
+ ipv6 address ::C:3:0:0:109/128
+!
+interface Loopback119
+ description Loopback119
+ ip address 10.168.0.119 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.7 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to PEx17
+ ip address 10.2.0.22 255.255.255.252
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:41/126
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to PEx18
+ ip address 10.22.0.22 255.255.255.252
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:11:1:0:41/126
+!
+router bgp 65000
+ bgp log-neighbor-changes
+ neighbor 10.2.0.21 remote-as 1
+ neighbor 10.2.0.21 description PEx17
+ !
+ address-family ipv4
+  network 10.168.0.109 mask 255.255.255.255
+  redistribute connected
+  neighbor 10.2.0.21 activate
+ exit-address-family
+ !
+ address-family ipv6
+  redistribute connected
+  network ::C:3:0:0:109/128
+  neighbor 10.2.0.21 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:41" ipv4="10.2.0.22" name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+        <interface name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv6="::b:3:0:0:2" ipv4="10.168.0.110" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="48,304" subtype="IOSv" type="SIMPLE" name="Cust1S2-110">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:59:24 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cust1S2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 10.168.0.110 255.255.255.255
+ ip pim sparse-mode
+ ipv6 address ::C:3:0:0:110/128
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.8 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to PEx18
+ ip address 10.2.0.1 255.255.255.252
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:5/126
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 65000
+ bgp log-neighbor-changes
+ neighbor 10.2.0.2 remote-as 1
+ neighbor 10.2.0.2 description PEx18
+ !
+ address-family ipv4
+  network 10.168.0.110 mask 255.255.255.255
+  redistribute connected
+  neighbor 10.2.0.2 activate
+ exit-address-family
+ !
+ address-family ipv6
+  redistribute connected
+  network ::C:3:0:0:110/128
+  neighbor 10.2.0.2 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:5" ipv4="10.2.0.1" name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv6="::b:1:0:0:5" ipv4="192.168.0.5" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="565,140" subtype="IOSv" type="SIMPLE" name="ASBR15">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:48:01 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ASBR15
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Cust2S3
+ rd 200:13
+ vpn id 200:1
+ route-target export 200:1
+ route-target import 200:1
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.15 255.255.255.255
+ ip pim sparse-mode
+ ipv6 address ::B:1:0:0:15/128
+!
+interface GigabitEthernet0/0
+ ip address 10.18.0.9 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to Px13
+ ip address 10.1.0.18 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:12/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+interface GigabitEthernet0/2
+ description to Px14
+ ip address 10.1.0.38 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:26/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+interface GigabitEthernet0/3
+ description to ASBR25
+ ip address 10.0.128.5 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:D/126
+!
+interface GigabitEthernet0/4
+ description ASBR16
+ ip address 10.2.0.5 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:9/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+interface GigabitEthernet0/5
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router isis 1
+ net 56.0000.0000.0015.00
+ is-type level-1
+ metric-style wide
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65535
+ lsp-gen-interval 1 50 1000
+ use external-metrics
+ no hello padding
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.15
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor ::B:1:0:0:11 remote-as 1
+ neighbor ::B:1:0:0:11 description iBGP peer RR11
+ neighbor ::B:1:0:0:11 update-source Loopback0
+ neighbor ::B:1:0:0:12 remote-as 1
+ neighbor ::B:1:0:0:12 description iBGP peer RR12
+ neighbor ::B:1:0:0:12 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer RR11
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer RR12
+ neighbor 192.168.0.12 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.15 mask 255.255.255.255
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community both
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community both
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+ !
+ address-family ipv6
+  network ::B:1:0:0:15/128
+  neighbor ::B:1:0:0:11 activate
+  neighbor ::B:1:0:0:11 next-hop-self
+  neighbor ::B:1:0:0:12 activate
+  neighbor ::B:1:0:0:12 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0 force
+!
+control-plane
+!
+banner exec `CCCc`
+banner incoming `CCCc`
+banner login `CCCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+line vty 1
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ length 0
+ transport input none
+line vty 2 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:11" ipv4="10.2.0.9" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:15" ipv4="10.2.0.13" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:d" ipv4="10.0.128.5" name="GigabitEthernet0/3" id="2"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:9" ipv4="10.2.0.5" name="GigabitEthernet0/4" id="3"/>
+        <interface name="GigabitEthernet0/5" id="4"/>
+    </node>
+    <node ipv6="::b:1:0:0:6" ipv4="192.168.0.6" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="565,304" subtype="IOSv" type="SIMPLE" name="ASBR16">
+        <extensions>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="Boolean" key="AutoNetkit.MPLS TE enabled">false</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:49:22 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ASBR16
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.16 255.255.255.255
+ ipv6 address ::B:1:0:0:16/128
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.10 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to Px13
+ ip address 10.1.0.22 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:16/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+interface GigabitEthernet0/2
+ description to Px14
+ ip address 10.1.0.42 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:2A/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+interface GigabitEthernet0/3
+ description to ASBR26
+ ip address 10.0.128.9 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:19/126
+!
+interface GigabitEthernet0/4
+ description to ASBR15
+ ip address 10.2.0.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:A/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+router isis 1
+ net 56.0000.0000.0056.00
+ is-type level-1
+ metric-style wide
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65535
+ lsp-gen-interval 1 50 1000
+ use external-metrics
+ no hello padding
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.16
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ no bgp default route-target filter
+ neighbor ::B:1:0:0:11 remote-as 1
+ neighbor ::B:1:0:0:11 description iBGP peer RR11
+ neighbor ::B:1:0:0:11 update-source Loopback0
+ neighbor ::B:1:0:0:12 remote-as 1
+ neighbor ::B:1:0:0:12 description iBGP peer RR12
+ neighbor ::B:1:0:0:12 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer RR11
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer RR12
+ neighbor 192.168.0.12 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.16 mask 255.255.255.255
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community both
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community both
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+ !
+ address-family ipv6
+  network ::B:1:0:0:16/128
+  neighbor ::B:1:0:0:11 activate
+  neighbor ::B:1:0:0:11 next-hop-self
+  neighbor ::B:1:0:0:12 activate
+  neighbor ::B:1:0:0:12 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.11 next-hop-self
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.12 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:1d" ipv4="10.2.128.1" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:21" ipv4="10.2.128.5" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:19" ipv4="10.0.128.9" name="GigabitEthernet0/3" id="2"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:a" ipv4="10.2.0.6" name="GigabitEthernet0/4" id="3"/>
+    </node>
+    <node ipv6="::b:3:0:0:3" ipv4="10.168.0.111" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="1186,141" subtype="IOSv" type="SIMPLE" name="Cust2S1-111">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:55:11 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cust2S1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 10.168.0.111 255.255.255.255
+ ip ospf 1 area 0
+ ipv6 address ::C:3:0:0:111/128
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.11 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to PE27
+ ip address 10.1.0.6 255.255.255.0
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:2:1:0:9/64
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet0/2
+ description GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ router-id 10.168.0.111
+ passive-interface Loopback0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 router ospf 1
+ router-id 10.168.0.111
+ passive-interface Loopback0
+!
+!
+!
+!
+control-plane
+!
+banner exec `Cc`
+banner incoming `Cc`
+banner login `Cc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:9" ipv4="10.1.0.6" name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv6="::b:2:0:0:1" ipv4="192.168.0.18" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="741,141" subtype="IOSv" type="SIMPLE" name="ASBR25">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">2</entry>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:51:47 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ASBR25
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+mpls ldp neighbor 192.168.0.25 password cisco
+mpls ldp neighbor 192.168.0.23 password cisco
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.25 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.12 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to P23
+ ip address 10.2.0.10 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description to ASBR15
+ ip address 10.0.128.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:E/126
+!
+interface GigabitEthernet0/3
+ description to ASBR26
+ ip address 10.2.0.17 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+router ospf 1
+ router-id 192.168.0.25
+ passive-interface Loopback0
+!
+router bgp 2
+ bgp router-id 192.168.0.25
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor 192.168.0.21 remote-as 2
+ neighbor 192.168.0.21 description iBGP peer RR21
+ neighbor 192.168.0.21 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.25 mask 255.255.255.255
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:15" ipv4="10.0.0.5" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:1:1:0:e" ipv4="10.0.128.6" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:11" ipv4="10.0.0.1" name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv6="::b:2:0:0:4" ipv4="192.168.0.17" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="1024,141" subtype="IOSv" type="SIMPLE" name="PE27">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">2</entry>
+            <entry type="String" key="AutoNetkit.ospf_area">0</entry>
+            <entry type="String" key="AutoNetkit.ibgp_role">Peer</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:50:12 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname PE27
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+mpls ldp neighbor 192.168.0.23 password cisco
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.27 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.13 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to P23
+ ip address 10.2.0.6 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ no keepalive
+!
+interface GigabitEthernet0/3
+ description to Cust1S2
+ mtu 1548
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ xconnect 192.168.0.28 100 encapsulation mpls
+!
+interface GigabitEthernet0/4
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ router-id 192.168.0.27
+ passive-interface Loopback0
+!
+router bgp 2
+ bgp router-id 192.168.0.27
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor 192.168.0.21 remote-as 2
+ neighbor 192.168.0.21 description iBGP peer RR21
+ neighbor 192.168.0.21 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.27 mask 255.255.255.255
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community extended
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community extended
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input telnet
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:e" ipv4="10.0.128.1" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:a" ipv4="10.1.0.5" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:6" ipv4="10.1.0.1" name="GigabitEthernet0/3" id="2"/>
+        <interface name="GigabitEthernet0/4" id="3"/>
+    </node>
+    <node ipv6="::b:3:0:0:4" ipv4="10.168.0.112" vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="1190,318" subtype="IOSv" type="SIMPLE" name="Cust2S2-112">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 18:00:12 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Cust2S2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 10.168.0.112 255.255.255.255
+ ip ospf 1 area 0
+ ipv6 address ::B:3:0:0:112/128
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.14 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to PE27
+ ip address 10.1.0.2 255.255.255.0
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:2:1:0:5/64
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ router-id 10.168.0.112
+ passive-interface Loopback0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 router ospf 1
+ router-id 10.168.0.112
+ passive-interface Loopback0
+!
+!
+!
+!
+control-plane
+!
+banner exec `Cc`
+banner incoming `Cc`
+banner login `Cc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface netPrefixLenV6="126" netPrefixLenV4="30" ipv6="::a:2:1:0:5" ipv4="10.1.0.2" name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="740,304" subtype="IOSv" type="SIMPLE" name="ASBR26">
+        <extensions>
+            <entry type="Boolean" key="Auto-generate config">false</entry>
+            <entry type="String" key="config">!
+! Last configuration change at 17:51:55 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ASBR26
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+mpls ldp neighbor 192.168.0.26 password cisco
+mpls ldp neighbor 192.168.0.23 password cisco
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.26 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.15 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to P23
+ ip address 10.2.0.14 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description to ASBR16
+ ip address 10.0.128.10 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:1A/126
+!
+interface GigabitEthernet0/3
+ description to ASBR25
+ ip address 10.2.0.18 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+router ospf 1
+ router-id 192.168.0.26
+ passive-interface Loopback0
+!
+router bgp 2
+ bgp router-id 192.168.0.26
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor 192.168.0.21 remote-as 2
+ neighbor 192.168.0.21 description iBGP peer RR21
+ neighbor 192.168.0.21 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.26 mask 255.255.255.255
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+  neighbor 192.168.0.21 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+        <interface name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="343,224" subtype="IOSv" type="SIMPLE" name="RR11">
+        <extensions>
+            <entry type="String" key="config">!
+! Last configuration change at 17:59:04 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname RR11
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.11 255.255.255.255
+ ipv6 address ::B:1:0:0:11/128
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.16 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to Px13
+ ip address 10.1.0.6 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:6/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+router isis 1
+ net 78.0000.0000.0011.00
+ is-type level-2-only
+ metric-style wide
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65535
+ lsp-gen-interval 1 50 1000
+ use external-metrics
+ no hello padding
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.11
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor ::B:1:0:0:12 remote-as 1
+ neighbor ::B:1:0:0:12 description iBGP peer RR12
+ neighbor ::B:1:0:0:12 update-source Loopback0
+ neighbor ::B:1:0:0:13 remote-as 1
+ neighbor ::B:1:0:0:13 description iBGP peer Px13
+ neighbor ::B:1:0:0:13 update-source Loopback0
+ neighbor ::B:1:0:0:14 remote-as 1
+ neighbor ::B:1:0:0:14 description iBGP peer Px14
+ neighbor ::B:1:0:0:14 update-source Loopback0
+ neighbor ::B:1:0:0:15 remote-as 1
+ neighbor ::B:1:0:0:15 description iBGP peer ASBR15
+ neighbor ::B:1:0:0:15 update-source Loopback0
+ neighbor ::B:1:0:0:16 remote-as 1
+ neighbor ::B:1:0:0:16 description iBGP peer ASBR16
+ neighbor ::B:1:0:0:16 update-source Loopback0
+ neighbor ::B:1:0:0:17 remote-as 1
+ neighbor ::B:1:0:0:17 description iBGP peer PEx17
+ neighbor ::B:1:0:0:17 update-source Loopback0
+ neighbor ::B:1:0:0:18 remote-as 1
+ neighbor ::B:1:0:0:18 description iBGP peer PEx18
+ neighbor ::B:1:0:0:18 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description IBGP peer RR12
+ neighbor 192.168.0.12 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer Px13
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer Px14
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.15 remote-as 1
+ neighbor 192.168.0.15 description iBGP peer ASBR15
+ neighbor 192.168.0.15 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer ASBR16
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer PEx17
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer PEx18
+ neighbor 192.168.0.18 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.11 mask 255.255.255.255
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community both
+  neighbor 192.168.0.12 soft-reconfiguration inbound
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.13 send-community both
+  neighbor 192.168.0.13 route-reflector-client
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.14 send-community both
+  neighbor 192.168.0.14 route-reflector-client
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community both
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community both
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community both
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community both
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community extended
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community extended
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community extended
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community extended
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+ !
+ address-family ipv6
+  network ::B:1:0:0:11/128
+  neighbor ::B:1:0:0:12 activate
+  neighbor ::B:1:0:0:13 activate
+  neighbor ::B:1:0:0:13 route-reflector-client
+  neighbor ::B:1:0:0:14 activate
+  neighbor ::B:1:0:0:14 route-reflector-client
+  neighbor ::B:1:0:0:15 activate
+  neighbor ::B:1:0:0:15 route-reflector-client
+  neighbor ::B:1:0:0:16 activate
+  neighbor ::B:1:0:0:16 route-reflector-client
+  neighbor ::B:1:0:0:17 activate
+  neighbor ::B:1:0:0:17 route-reflector-client
+  neighbor ::B:1:0:0:18 activate
+  neighbor ::B:1:0:0:18 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.12 send-community extended
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community extended
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community extended
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community extended
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community extended
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0 force
+!
+control-plane
+!
+banner exec `CCCc`
+banner incoming `CCCc`
+banner login `CCCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+line vty 1
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ length 0
+ transport input none
+line vty 2 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <node vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="442,223" subtype="IOSv" type="SIMPLE" name="RR12">
+        <extensions>
+            <entry type="String" key="config">!
+! Last configuration change at 17:59:16 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname RR12
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.12 255.255.255.255
+ ipv6 address ::B:1:0:0:12/128
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.17 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to Px14
+ ip address 10.1.0.26 255.255.255.252
+ ip router isis 1
+ ip pim sparse-mode
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address ::A:1:1:0:1A/126
+ ipv6 router isis 1
+ mpls ip
+ clns mtu 1430
+ isis network point-to-point 
+!
+router isis 1
+ net 56.0000.0000.0012.00
+ is-type level-2-only
+ metric-style wide
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65535
+ lsp-gen-interval 1 50 1000
+ use external-metrics
+ no hello padding
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.12
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor ::B:1:0:0:11 remote-as 1
+ neighbor ::B:1:0:0:11 description iBGP peer RR11
+ neighbor ::B:1:0:0:11 update-source Loopback0
+ neighbor ::B:1:0:0:13 remote-as 1
+ neighbor ::B:1:0:0:13 description iBGP peer Px13
+ neighbor ::B:1:0:0:13 update-source Loopback0
+ neighbor ::B:1:0:0:14 remote-as 1
+ neighbor ::B:1:0:0:14 description iBGP peer Px14
+ neighbor ::B:1:0:0:14 update-source Loopback0
+ neighbor ::B:1:0:0:15 remote-as 1
+ neighbor ::B:1:0:0:15 description iBGP peer ASBR15
+ neighbor ::B:1:0:0:15 update-source Loopback0
+ neighbor ::B:1:0:0:16 remote-as 1
+ neighbor ::B:1:0:0:16 description iBGP peer ASBR16
+ neighbor ::B:1:0:0:16 update-source Loopback0
+ neighbor ::B:1:0:0:17 remote-as 1
+ neighbor ::B:1:0:0:17 description iBGP peer PEx17
+ neighbor ::B:1:0:0:17 update-source Loopback0
+ neighbor ::B:1:0:0:18 remote-as 1
+ neighbor ::B:1:0:0:18 description iBGP peer PEx18
+ neighbor ::B:1:0:0:18 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description IBGP peer RR11
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer Px13
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer Px14
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.15 remote-as 1
+ neighbor 192.168.0.15 description iBGP peer ASBR15
+ neighbor 192.168.0.15 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer ASBR16
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer PEx17
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer PEx18
+ neighbor 192.168.0.18 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.12 mask 255.255.255.255
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community both
+  neighbor 192.168.0.11 soft-reconfiguration inbound
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.13 send-community both
+  neighbor 192.168.0.13 route-reflector-client
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.14 send-community both
+  neighbor 192.168.0.14 route-reflector-client
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community both
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community both
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community both
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community both
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community extended
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community extended
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community extended
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community extended
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+ !
+ address-family ipv6
+  network ::B:1:0:0:12/128
+  neighbor ::B:1:0:0:11 activate
+  neighbor ::B:1:0:0:13 activate
+  neighbor ::B:1:0:0:13 route-reflector-client
+  neighbor ::B:1:0:0:14 activate
+  neighbor ::B:1:0:0:14 route-reflector-client
+  neighbor ::B:1:0:0:15 activate
+  neighbor ::B:1:0:0:15 route-reflector-client
+  neighbor ::B:1:0:0:16 activate
+  neighbor ::B:1:0:0:16 route-reflector-client
+  neighbor ::B:1:0:0:17 activate
+  neighbor ::B:1:0:0:17 route-reflector-client
+  neighbor ::B:1:0:0:18 activate
+  neighbor ::B:1:0:0:18 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.11 send-community extended
+  neighbor 192.168.0.15 activate
+  neighbor 192.168.0.15 send-community extended
+  neighbor 192.168.0.15 route-reflector-client
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.16 send-community extended
+  neighbor 192.168.0.16 route-reflector-client
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 send-community extended
+  neighbor 192.168.0.17 route-reflector-client
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 send-community extended
+  neighbor 192.168.0.18 route-reflector-client
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0 force
+!
+control-plane
+!
+banner exec `CCCc`
+banner incoming `CCCc`
+banner login `CCCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+line vty 1
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ length 0
+ transport input none
+line vty 2 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <node vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="1009,313" subtype="IOSv" type="SIMPLE" name="RR-PE28">
+        <extensions>
+            <entry type="String" key="config">!
+! Last configuration change at 17:54:54 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname RR-PE28
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging monitor alerts
+enable secret 5 $1$XdO3$o4NUXto9vUOiLz.RiPvbn/
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+mpls ldp neighbor 192.168.0.23 password cisco
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.28 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.18.0.18 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to P23
+ ip address 10.2.0.2 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description to Cust2S2-112
+ mtu 1548
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ xconnect 192.168.0.27 100 encapsulation mpls
+!
+router ospf 1
+ router-id 192.168.0.28
+ passive-interface Loopback0
+!
+router bgp 2
+ bgp router-id 192.168.0.28
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor 192.168.0.23 remote-as 2
+ neighbor 192.168.0.23 description iBGP peer P23
+ neighbor 192.168.0.23 update-source Loopback0
+ neighbor 192.168.0.25 remote-as 2
+ neighbor 192.168.0.25 description iBGP peer ASBRx25
+ neighbor 192.168.0.25 update-source Loopback0
+ neighbor 192.168.0.26 remote-as 2
+ neighbor 192.168.0.26 description iBGP peer ASBRx26
+ neighbor 192.168.0.26 update-source Loopback0
+ neighbor 192.168.0.27 remote-as 2
+ neighbor 192.168.0.27 description iBGP peer PE27
+ neighbor 192.168.0.27 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.21 mask 255.255.255.255
+  neighbor 192.168.0.23 activate
+  neighbor 192.168.0.23 send-community both
+  neighbor 192.168.0.23 route-reflector-client
+  neighbor 192.168.0.25 activate
+  neighbor 192.168.0.25 send-community both
+  neighbor 192.168.0.25 route-reflector-client
+  neighbor 192.168.0.26 activate
+  neighbor 192.168.0.26 send-community both
+  neighbor 192.168.0.26 route-reflector-client
+  neighbor 192.168.0.27 activate
+  neighbor 192.168.0.27 send-community both
+  neighbor 192.168.0.27 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.0.25 activate
+  neighbor 192.168.0.25 send-community extended
+  neighbor 192.168.0.25 route-reflector-client
+  neighbor 192.168.0.26 activate
+  neighbor 192.168.0.26 send-community extended
+  neighbor 192.168.0.26 route-reflector-client
+  neighbor 192.168.0.27 activate
+  neighbor 192.168.0.27 send-community extended
+  neighbor 192.168.0.27 route-reflector-client
+ exit-address-family
+ !
+ address-family vpnv6
+  neighbor 192.168.0.25 activate
+  neighbor 192.168.0.25 send-community extended
+  neighbor 192.168.0.25 route-reflector-client
+  neighbor 192.168.0.26 activate
+  neighbor 192.168.0.26 send-community extended
+  neighbor 192.168.0.26 route-reflector-client
+  neighbor 192.168.0.27 activate
+  neighbor 192.168.0.27 send-community extended
+  neighbor 192.168.0.27 route-reflector-client
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node vmFlavor="IOSv" vmImage="IOSv-adventerprisek9-m.virl.154-2.T1" location="900,235" subtype="IOSv" type="SIMPLE" name="P23">
+        <extensions>
+            <entry type="String" key="config">!
+! Last configuration change at 17:49:55 UTC Thu Apr 6 2017
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname P23
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging monitor
+enable password cisco
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip multicast-routing 
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+ipv6 multicast-routing
+!
+multilink bundle-name authenticated
+mpls label protocol ldp
+mpls ldp neighbor 192.168.0.25 password cisco 
+mpls ldp neighbor 192.168.0.26 password cisco 
+mpls ldp neighbor 192.168.0.27 password cisco 
+mpls ldp neighbor 192.168.0.28 password cisco 
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.23 255.255.255.255
+ ip ospf 1 area 0
+!
+interface GigabitEthernet0/0
+ ip address 10.18.0.19 255.255.0.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to RR21
+ ip address 10.2.0.1 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description to PE27
+ ip address 10.2.0.5 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+!
+interface GigabitEthernet0/3
+ description to ASBR25
+ ip address 10.2.0.9 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+ clns mtu 1430
+!
+interface GigabitEthernet0/4
+ description to ASBR26
+ ip address 10.2.0.13 255.255.255.252
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ duplex auto
+ speed auto
+ media-type rj45
+ mpls ip
+ clns mtu 1430
+!
+router ospf 1
+ router-id 192.168.0.23
+ passive-interface Loopback0
+!
+router bgp 2
+ bgp router-id 192.168.0.23
+ bgp always-compare-med
+ bgp asnotation dot
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ bgp bestpath med missing-as-worst
+ no bgp default ipv4-unicast
+ bgp default inter-as-hybrid advertise-source-routes
+ neighbor 192.168.0.21 remote-as 2
+ neighbor 192.168.0.21 description iBGP peer RR21
+ neighbor 192.168.0.21 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 192.168.0.21 activate
+  neighbor 192.168.0.21 send-community both
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+mpls ldp router-id Loopback0
+!
+control-plane
+!
+banner exec `CCc`
+banner incoming `CCc`
+banner login `CCc`
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ no login
+ transport input none
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface name="GigabitEthernet0/1" id="0"/>
+        <interface name="GigabitEthernet0/2" id="1"/>
+        <interface name="GigabitEthernet0/3" id="2"/>
+        <interface name="GigabitEthernet0/4" id="3"/>
+    </node>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[1]" dst="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[3]" dst="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[4]" dst="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[3]" dst="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[4]" dst="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[5]" dst="/virl:topology/virl:node[7]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[6]" dst="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[5]" dst="/virl:topology/virl:node[7]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[6]" dst="/virl:topology/virl:node[8]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[3]/virl:interface[3]" dst="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[3]" dst="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[10]/virl:interface[2]" dst="/virl:topology/virl:node[7]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[11]/virl:interface[2]" dst="/virl:topology/virl:node[9]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[7]/virl:interface[4]" dst="/virl:topology/virl:node[8]/virl:interface[4]"/>
+    <connection src="/virl:topology/virl:node[13]/virl:interface[2]" dst="/virl:topology/virl:node[8]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[13]/virl:interface[3]" dst="/virl:topology/virl:node[10]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[14]/virl:interface[1]" dst="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[15]/virl:interface[1]" dst="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[16]/virl:interface[2]" dst="/virl:topology/virl:node[12]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[17]/virl:interface[1]" dst="/virl:topology/virl:node[16]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[17]/virl:interface[2]" dst="/virl:topology/virl:node[11]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[17]/virl:interface[3]" dst="/virl:topology/virl:node[10]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[17]/virl:interface[4]" dst="/virl:topology/virl:node[13]/virl:interface[1]"/>
+</topology>
