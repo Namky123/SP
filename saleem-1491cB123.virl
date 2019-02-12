@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
+    <node name="csr1000v-1" type="SIMPLE" subtype="CSR1000v" location="34,56">
+        <interface id="0" name="GigabitEthernet2"/>
+    </node>
+    <node name="csr1000v-2" type="SIMPLE" subtype="CSR1000v" location="268,84">
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+		<extensions>
+            <entry key="config" type="string">
+			
+		hostname CE1
+!
+enable password cisco
+!
+no aaa new-model
+!
+no ip domain lookup
+ip domain name cisco.com
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+interface Loopback0
+ ip address 10.1.10.1 255.255.255.255
+ ipv6 address 2001:DB8:10:1:10::1/128
+ ipv6 enable
+!
+interface Loopback1
+ ip address 10.99.1.1 255.255.255.0
+!
+interface Loopback2
+ ip address 172.16.1.1 255.255.255.0
+!
+interface GigabitEthernet2
+ description Link to SW1
+ ip address 192.168.101.11 255.255.255.0
+ duplex full
+ speed 100
+ ipv6 enable
+ ipv6 address 2001:DB8:192:168:101::11/80
+ ipv6 enable
+ no shutdown
+!
+
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ password cisco
+ login
+ privilege level 15
+ transport input all
+line vty 5 15
+ password cisco
+ privilege level 15
+ login
+ transport input all
+!
+end
+    </node>
+    <node name="csr1000v-3" type="SIMPLE" subtype="CSR1000v" location="404,178">
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+        <interface id="2" name="GigabitEthernet4"/>
+        <interface id="3" name="GigabitEthernet5"/>
+    </node>
+    <node name="csr1000v-4" type="SIMPLE" subtype="CSR1000v" location="709,300">
+        <interface id="0" name="GigabitEthernet2"/>
+    </node>
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="76,249">
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="asav-1" type="SIMPLE" subtype="ASAv" location="720,29">
+        <interface id="0" name="GigabitEthernet0/0"/>
+    </node>
+    <annotations>
+        <ellipse x="283" y="292" width="50" height="50" fill="CCCCCC" stroke-width="3"/>
+        <text x="70" y="292" font-size="18">Saleem TEST</text>
+    </annotations>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[3]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[4]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
+</topology>
